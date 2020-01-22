@@ -1,0 +1,36 @@
+body {
+    background-image: url("/static/assets/background@2x.png");
+    background-repeat: no-repeat;
+    background-position: center center;   
+}
+
+.project {
+    background-color: lightgray;
+    margin-right: 10px;
+
+}
+.project:last-child{
+    margin-right: 0px;
+}
+.project:hover{
+    border:3px solid lightblue;
+}
+.project-img {
+    width: 80%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.ama-ui {
+    background-color: lightgray;
+    height: 200px;
+}
+.logo {
+    width: 20%;
+    margin-top: 50px;
+    margin-bottom: 120px;
+}
+
+.nav-tabs .nav-link {
+    background-color: gray;
+    color: black;
+}   

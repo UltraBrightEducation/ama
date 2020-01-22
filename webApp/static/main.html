@@ -1,0 +1,17 @@
+<html>
+   {% include 'templates/header.html' %}
+
+         <div class="row">
+            <div class="col-3 mx-auto project">
+               <a href="/ama"><img src="{{ url_for('static', filename='assets/nlp2x.png') }}" class="rounded project-img mx-auto d-block" alt="..."></a> 
+            </div>
+            <div class="col-3 mx-auto project">
+               <a href="/ds"><img src="{{ url_for('static', filename='assets/ds.png') }}" class="rounded project-img mx-auto d-block" alt="..."></a>
+            </div>
+            <div class="col-3 mx-auto project" style="padding-top: 20px;">
+               <a href="/cv"><img src="{{ url_for('static', filename='assets/cv.png') }}" class="rounded project-img mx-auto d-block" alt="..."></a>
+            </div>
+      </div>
+
+   </body>
+</html>

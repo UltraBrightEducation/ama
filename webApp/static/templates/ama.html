@@ -1,0 +1,31 @@
+<html>
+   {% include 'templates/header.html' %}
+   <body>
+       <div class="container-fluid">  
+            <ul id="clothing-nav" class="nav nav-tabs" role="tablist">
+               <li class="nav-item">
+                  <a class="nav-link active" href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">AskMeAnything Demo</a>
+               </li>
+         
+               <li class="nav-item">
+                  <a class="nav-link" href="#hats" role="tab" id="hats-tab" data-toggle="tab" aria-controls="hats">AskMeAnything Score</a>
+               </li>
+            </ul>
+         
+         <!-- Content Panel -->
+         <div id="clothing-nav-content" class="tab-content">
+         
+         <div role="tabpanel" class="tab-pane fade show active ama-ui" id="home" aria-labelledby="home-tab">
+            <p>Welcome home! Click on the tabs to see the content change.</p>
+         </div>
+         
+         <div role="tabpanel" class="tab-pane fade ama-ui" id="hats" aria-labelledby="hats-tab">
+            <p>A hat is a head covering. It can be worn for protection against the elements, ceremonial reasons, religious reasons, safety, or as a fashion accessory.</p>
+         </div>
+         
+         </div>
+         
+         
+         </div>
+   </body>
+</html>
