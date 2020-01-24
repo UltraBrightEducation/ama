@@ -16,15 +16,15 @@
         var vm = this;
 
 
-        vm.localUser = {userId: 'student', avatar: '', userName: 'Student'};
-        vm.amaUser = {userId: 'AMA', avatar: '', userName: 'AMA Bot'};
+        vm.localUser = {userId: 'student', avatar: '/static/assets/Man_Avatar.gif', userName: 'Student'};
+        vm.amaUser = {userId: 'AMA', avatar: '/static/assets/robot_avatar.png', userName: 'AMA Bot'};
 
         vm.sendMessage = function(message) {
           console.log('Sending Request to BotAPI:', message.text);
           vm.callAMA(message.text);
       };
 
-        vm.messages = [{id: '1', text: "Welcome! I'm the AMA Bot!", userid: 'AMA', date: Math.floor(Date.now())}]
+        vm.messages = [{id: '1', avatar: vm.amaUser.avatar, text: "Welcome! I'm the AMA Bot!", userid: 'AMA', date: Math.floor(Date.now())}]
 
         $scope.$on('simple-chat-message-posted', function() {
           console.log('onMessagePosted');
@@ -45,7 +45,7 @@
         }
 
         vm.createAmaResponseMessage = function(message) {
-          message = {id: new Date().valueOf(), userid: vm.amaUser.userId, text: message, date: Math.floor(Date.now())};
+          message = {id: new Date().valueOf(), userid: vm.amaUser.userId, avatar: vm.amaUser.avatar, text: message, date: Math.floor(Date.now())};
           vm.messages.push(message);
         }
       }
