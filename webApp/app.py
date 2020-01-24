@@ -18,18 +18,25 @@ def cv():
     return render_template(('/templates/cv.html'))
 
 ### Backend
-@app.route('/api/grade/nlp', methods= ['POST'])
+@app.route('/api/nlp', methods= ['POST'])
 def grade_nlp():
     score = 0
     try:
         payload = request.get_json()
         action = payload.get('action', None)
-        if 'action' == 'grade':
+        text_to_predict = payload.get('text_to_predict', None)
+
+        if action == 'grade':
             ### call nlp grading function here
             score = 98
+            response = {'status': status.HTTP_200_OK, 'score': score, 'action_performed': action}
+            pass
+        
+        if action == 'predict':
+            ### Call model 
+            response = {'status': status.HTTP_200_OK, 'ama_response': 'Got you dude!'}
             pass
 
-        response = {'status': status.HTTP_200_OK, 'score': score, 'action_performed': action}
         return jsonify(response)
 
     except Exception as e:
