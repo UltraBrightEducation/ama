@@ -34,3 +34,7 @@ body {
     background-color: gray;
     color: black;
 }   
+
+simple-chat {
+    border: unset !important;
+}

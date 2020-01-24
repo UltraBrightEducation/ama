@@ -109,6 +109,6 @@ metastore_db
 .pytest_cache
 .vscode/
 .venv/
-
+webApp/.venv
 # Local data
 *.npy
