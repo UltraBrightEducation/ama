@@ -1,6 +1,6 @@
-<html>
+<html ng-app="FinalProjectApp">
    {% include 'templates/header.html' %}
-       <div ng-app="FinalProjectApp" class="container-fluid" ng-controller="amaCtrl as AppView" style="margin-top: -70px;">  
+       <div  class="container-fluid" ng-controller="amaCtrl as AppView" style="margin-top: -70px;">  
             <ul id="clothing-nav" class="nav nav-tabs" role="tablist">
                <li class="nav-item">
                   <a class="nav-link active" href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">AskMeAnything Demo</a>
@@ -10,21 +10,73 @@
                   <a class="nav-link" href="#hats" role="tab" id="hats-tab" data-toggle="tab" aria-controls="hats">AskMeAnything Score</a>
                </li>
             </ul>
-         
          <!-- Content Panel -->
             <div id="clothing-nav-content" class="tab-content">
                <div role="tabpanel" style="height: 500px;background-color: white;" class="tab-pane fade show active ama-ui" id="home" aria-labelledby="home-tab">
                   <div class="row">
+                     <div class="col-2"></div>
                      <div class="col-6 mx-auto" style="margin-top: 30px;">
                         <simple-chat style="height: 400px;"
-                        messages="AppView.messages"
-                        local-user="AppView.localUser"
-                        send-function="AppView.sendMessage"
-                        send-button-text="Ask"
-                        show-composer="true"
-                        show-user-avatar="false"
-                        composer-placeholder-text="Ask me Anything!">
-                     </simple-chat>
+                           messages="AppView.messages"
+                           local-user="AppView.localUser"
+                           send-function="AppView.sendMessage"
+                           send-button-text="Ask"
+                           show-composer="true"
+                           show-user-avatar="false"
+                           composer-placeholder-text="Ask me Anything!">
+                        </simple-chat>
+                     </div>
+                     <div ng-controller='audioController as Record' class="col-3">
+                        <div style="margin-top: 30px;" ng-audio-recorder id="mainAudio" audio-model="audio">
+                           <div ng-if="recorder.isAvailable">
+                              <div>
+                                 <!-- <h3 style="float: right; font-family: sans-serif; text-align: center; width: 50px; border-radius: 50%; border: solid 2px #333; padding: 10px; margin: 0; background: #337ab7; color: #fff;"
+                                    ng-if="recorder.status.isRecording">
+                                    {{ "{{recorder.elapsedTime >= 10 ? recorder.elapsedTime : ('0'+recorder.elapsedTime)}}" }}
+                                 </h3> -->
+                                 <div class="alert alert-danger" ng-if="recorder.status.isDenied === true">
+                                    Permission to use your microphone was declined, please refresh this page to grant
+                                    permission.
+                                 </div>
+                                 <div class="controls" style="padding-top: 10px;"
+                                    ng-hide="recorder.status.isDenied === true">
+                                    <div style="margin-top: 50px;">
+                                       <button style="border-radius: 50%;" ng-click="recorder.status.isRecording ? recorder.stopRecord() : recorder.startRecord()"
+                                                type="button" class="btn"
+                                                ng-class="{'btn-primary': !recorder.status.isRecording, 'btn-danger': recorder.status.isRecording}">
+                                                <i style="font-size: 90px; width: 94px;padding: 10px" class="fa fa-microphone fa-sm"></i> 
+                                       </button>
+                                       <div style="margin-left: -40px;margin-top: 10px;" ng-show="recorder.status.isRecording">
+                                          <ng-audio-recorder-analyzer width=300 height=150 wave-color="lightgray"></ng-audio-recorder-analyzer>
+                                       </div>
+                                    </div>
+                                 </div>
+                                    <!-- <button class="btn"
+                                             ng-class="{'btn-primary': (recorder.status.isPaused || recorder.status.isStopped), 'btn-warning': recorder.status.isPlaying}"
+                                             ng-click="recorder.status.isPlaying ? recorder.playbackPause() : recorder.playbackResume()"
+                                             type="button"
+                                             ng-disabled="recorder.status.isRecording || !recorder.audioModel">
+                                       <span ng-if="recorder.status.isPaused || recorder.status.isStopped">
+                                             <i class="glyphicon glyphicon-play"></i> Play
+                                       </span>
+                                       <span ng-if="recorder.status.isPlaying">
+                                             <i class="glyphicon glyphicon-pause"></i> Pause
+                                       </span>
+                                    </button> -->
+                                 </div>
+                                 <div class="clearfix"></div>
+                              </div>
+                                    <br/>
+                                    <!-- <div class="panels" canvas-sizer>
+                                          <div ng-show="recorder.status.isRecording">
+                                             <ng-audio-recorder-analyzer></ng-audio-recorder-analyzer>
+                                          </div>
+                                          <div ng-show="!recorder.status.isRecording && recorder.audioModel">
+                                             <ng-audio-recorder-wave-view wave-color="silver" bar-color="red"></ng-audio-recorder-wave-view>
+                                          </div>
+                                    </div> -->
+                           </div>
+                        </div>
                      </div>
                   </div>
                </div>
@@ -32,6 +84,7 @@
                   <p>A hat is a head covering. It can be worn for protection against the elements, ceremonial reasons, religious reasons, safety, or as a fashion accessory.</p>
                </div>
             </div>
-         </div>
+         </div>              
+        </div>
    </body>
 </html>
