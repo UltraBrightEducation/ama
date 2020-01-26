@@ -20,7 +20,6 @@ def cv():
 ### Backend
 @app.route('/api/stt', methods=['POST'])
 def get_file_to_tts():
-    import ipdb ; ipdb.set_trace()
     try:
         with open('command.wav', 'wb') as file:
             wav_data = request.data
