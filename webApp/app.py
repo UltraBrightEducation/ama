@@ -18,6 +18,22 @@ def cv():
     return render_template(('/templates/cv.html'))
 
 ### Backend
+@app.route('/api/stt', methods=['POST'])
+def get_file_to_tts():
+    import ipdb ; ipdb.set_trace()
+    try:
+        with open('command.wav', 'wb') as file:
+            wav_data = request.data
+            file.write(wav_data)
+
+            response = {'status': status.HTTP_200_OK, 'ama_response': 'Got you dude!'}
+
+        return jsonify(response)
+
+    except Exception as e:
+        response = {'status': status.HTTP_500_INTERNAL_SERVER_ERROR, 'message': '({}) - Something went Wrong! Try Again!'.format(str(e))}
+        return jsonify(response)
+
 @app.route('/api/nlp', methods= ['POST'])
 def grade_nlp():
     score = 0
