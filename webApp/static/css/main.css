@@ -38,3 +38,16 @@ body {
 simple-chat {
     border: unset !important;
 }
+
+.loading {
+    max-width: 500px;
+    margin-left: 250px;
+    margin-top: 50px;
+    z-index: 600;
+}
+
+.loading-container {
+    z-index: 300;
+    background: white;
+    opacity: .8;
+}

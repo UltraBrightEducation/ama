@@ -19,7 +19,6 @@
       $scope.timeLimit = 10;
       vm.sendAudioForSTT = function(audiofile) {
         if (!audiofile) return;
-
         $rootScope.$broadcast('audioCaptured', {});
 
         var config = { headers: { 'Content-Type': undefined } };
@@ -31,8 +30,8 @@
             var statusText = response.statusText;
             var headers = response.headers;
             var config = response.config;
-
-            console.log("Success", status);
+            $rootScope.$broadcast('audioCaptured', {response});
+            console.log("Success", response);
             return response; 
         }).catch(function (errorResponse) {
             console.log("Error", errorResponse.status);
@@ -53,7 +52,7 @@
     app.controller('amaCtrl', ['$scope', '$log', '$http', 
       function($scope, $log, $http) {
         var vm = this;
-
+        vm.loading = false;
         vm.localUser = {userId: 'student', avatar: '/static/assets/Man_Avatar.gif', userName: 'Student'};
         vm.amaUser = {userId: 'AMA', avatar: '/static/assets/robot_avatar.png', userName: 'AMA Bot'};
 
@@ -70,12 +69,14 @@
 
         vm.callAMA = function(message) {
           // make the call
+          vm.loading = true;
           $http({
             method: 'POST',
             url: '/api/nlp',
             data: { action: 'predict', text: message }
           }).then(function (response) {
-            vm.createAmaResponseMessage(response.data.ama_response)
+            vm.createAmaResponseMessage(response.data.ama_response);
+            vm.loading = !vm.loading;
           }, function (error) {
             console.log(error);
           });
@@ -87,8 +88,13 @@
           vm.messages.push(message);
         }
 
-        $scope.$on('audioCaptured', function() {
-          vm.messages.push({id: new Date().valueOf(), avatar: vm.amaUser.avatar, text: "Analyzing your voice input...", userid: 'AMA', date: Math.floor(Date.now())})
+        $scope.$on('audioCaptured', function(a, b) {
+          if (!b.response) {
+              vm.loading = !vm.loading;
+              return;
+          }
+          vm.messages.push({id: new Date().valueOf(), avatar: vm.amaUser.avatar, text: b.response.data.message, userid: 'AMA', date: Math.floor(Date.now())});
+          vm.loading = !vm.loading;
         })
       }
     ]);

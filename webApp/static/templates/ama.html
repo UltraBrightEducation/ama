@@ -11,8 +11,11 @@
                </li>
             </ul>
          <!-- Content Panel -->
-            <div id="clothing-nav-content" class="tab-content">
+            <div id="clothing-nav-content" ng-class="{'loading-container': AppView.loading}" class="tab-content">
                <div role="tabpanel" style="height: 500px;background-color: white;" class="tab-pane fade show active ama-ui" id="home" aria-labelledby="home-tab">
+                  <div ng-if="AppView.loading" style="position: absolute;">
+                     <img class="loading" src="{{ url_for('static', filename='assets/loading.gif') }}">
+                  </div>
                   <div class="row">
                      <div class="col-2"></div>
                      <div class="col-6 mx-auto" style="margin-top: 30px;">

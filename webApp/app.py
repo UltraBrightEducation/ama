@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, jsonify
 from flask_api import status
 import time, json, boto3
 from urllib.request import urlopen
+import speech_recognition as sr
 
 app = Flask(__name__,static_folder='static', template_folder='static')
 
 #AWS Keys
-ACCESS_KEY = 'AKIA6HNGQFTRI4C3R3IX'
-SECRET_KEY = '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'
+ACCESS_KEY = ''
+SECRET_KEY = ''
 BUCKET_URL = 'https://ub-ama.s3.eu-west-3.amazonaws.com'
 ### BUCKET REGION AND TRANSCRIPT REGION NEEDS TO BE ON THE SAME ONE
 REGION_NAME = 'eu-west-3'
@@ -42,32 +43,44 @@ def get_file_to_tts():
     job_name = 'ama_recording_' + str(int(time.time()))
     job_uri = BUCKET_URL + '/' + object_key
 
+    r = sr.Recognizer()
+
     try:
         with open('command.wav', 'wb') as file:
             wav_data = request.data
             file.write(wav_data)
-            # Upload file to S3
-            s3.Bucket(bucket_name).upload_file(source_file, object_key)
-            # Create Transcribe job
-            Transcribe = boto3.client('transcribe', aws_access_key_id=ACCESS_KEY,aws_secret_access_key=SECRET_KEY, region_name=REGION_NAME)
-            Transcribe.start_transcription_job(TranscriptionJobName=job_name, Media={'MediaFileUri': job_uri}, MediaFormat='wav', LanguageCode='en-US')
 
-            while True:
-                job_status = Transcribe.get_transcription_job(TranscriptionJobName=job_name)
-                if job_status['TranscriptionJob']['TranscriptionJobStatus'] in ['COMPLETED', 'FAILED']:
-                    break
-                time.sleep(2)
+            # # Upload file to S3
+            # s3.Bucket(bucket_name).upload_file(source_file, object_key)
+            # # Create Transcribe job
+            # Transcribe = boto3.client('transcribe', aws_access_key_id=ACCESS_KEY,aws_secret_access_key=SECRET_KEY, region_name=REGION_NAME)
+            # Transcribe.start_transcription_job(TranscriptionJobName=job_name, Media={'MediaFileUri': job_uri}, MediaFormat='wav', LanguageCode='en-US')
 
-            if job_status['TranscriptionJob']['TranscriptionJobStatus'] == 'COMPLETED':
-                response = urlopen(job_status['TranscriptionJob']['Transcript']['TranscriptFileUri'])
-                data = json.loads(response.read())
-                text = data['results']['transcripts'][0]['transcript']
+            # while True:
+            #     job_status = Transcribe.get_transcription_job(TranscriptionJobName=job_name)
+            #     if job_status['TranscriptionJob']['TranscriptionJobStatus'] in ['COMPLETED', 'FAILED']:
+            #         break
+            #     time.sleep(2)
 
-            ### CALL MODEL with variable 'text' as input
-            prediction = predict(text)
-            ### 
-            response = {'status': status.HTTP_200_OK, 'ama_response': prediction}
+            # if job_status['TranscriptionJob']['TranscriptionJobStatus'] == 'COMPLETED':
+            #     response = urlopen(job_status['TranscriptionJob']['Transcript']['TranscriptFileUri'])
+            #     data = json.loads(response.read())
+            #     text = data['results']['transcripts'][0]['transcript']
+            
+        file.close
+        time.sleep(1)
+        command = sr.AudioFile(source_file)
+        with command as source:
+            #r.adjust_for_ambient_noise(source)
+            audio = r.record(source)
+        
+        time.sleep(1)
+        text = r.recognize_google(audio)
 
+        ### CALL MODEL with variable 'text' as input
+        prediction = predict(text)
+        ### 
+        response = {'status': status.HTTP_200_OK, 'message': prediction}
         return jsonify(response)
 
     except Exception as e:
