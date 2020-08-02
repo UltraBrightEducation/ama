@@ -1,3 +1,6 @@
+speech_recognizer/
+audio_files/*.wav
+
 # virtualenv goodies
 bin/
 include/

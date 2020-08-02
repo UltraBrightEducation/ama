@@ -10,13 +10,13 @@ def text_to_text(input_text, enc_model , dec_model, str_to_tokens, preprocess_te
     empty_target_seq = np.zeros(shape = (1, 1))
 
     # Update the target sequence with index of "start"
-    empty_target_seq[0, 0] = tokenizer.word_index["start"]
+    empty_target_seq[0, 0] = tokenizer.word_index["starttoken"]
 
     # Initialize the stop condition with False
     stop_condition = False
 
     # Initialize the decoded words with an empty string
-    decoded_translation = ''
+    decoded_translation = []
 
     # While stop_condition is false
     while not stop_condition :
@@ -37,17 +37,17 @@ def text_to_text(input_text, enc_model , dec_model, str_to_tokens, preprocess_te
             if sampled_word_index == index :
 
                 # Add the word to the decoded string
-                decoded_translation += ' {}'.format(word)
+                decoded_translation.append(word)
 
                 # Update the sampled word
                 sampled_word = word
-        
+
         # If sampled word is equal to "end" OR the length of decoded string is more that what is allowed
-        if sampled_word == 'end' or len(decoded_translation.split()) > maxlen_answers:
+        if sampled_word == 'endtoken' or len(decoded_translation) > maxlen_answers:
 
             # Make the stop_condition to true
             stop_condition = True
-            
+
         # Initialize back the target sequence to zero - array([[0.]])    
         empty_target_seq = np.zeros(shape = (1, 1))  
 
@@ -58,4 +58,4 @@ def text_to_text(input_text, enc_model , dec_model, str_to_tokens, preprocess_te
         states_values = [h, c] 
 
     # return the decoded string
-    return decoded_translation[:-3]
+    return ' '.join(decoded_translation[:-1])
