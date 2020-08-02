@@ -1,6 +1,6 @@
 speech_recognizer/
 audio_files/*.wav
-saved_models/*
+*.h5
 
 # virtualenv goodies
 bin/
